@@ -22,12 +22,10 @@ The Knowledge Base Application is a web application that allows users to search 
    git clone https://github.com/yourusername/KnowledgeApp.git
    cd KnowledgeApp
 2. **Create and activate a virtual environment (optional)**:
-python -m venv venv
-### Activate on Windows
-venv\Scripts\activate
-### Activate on macOS/Linux
-source venv/bin/activate
-
+   ```bash
+   python -m venv venv
+> **Activate on Windows** ```bash venv\Scripts\activate```
+> **Activate on macOS/Linux** ```bash source venv/bin/activate ```
 3. **Install required packages**:
    ```bash
    pip install -r requirements.txt
