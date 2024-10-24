@@ -23,18 +23,24 @@ The Knowledge Base Application is a web application that allows users to search 
    cd KnowledgeApp
 2. **Create and activate a virtual environment (optional)**:
 python -m venv venv
-# Activate on Windows
+### Activate on Windows
 venv\Scripts\activate
-# Activate on macOS/Linux
+### Activate on macOS/Linux
 source venv/bin/activate
+
 3. **Install required packages**:
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
 4. **Create a .env file with your email credentials**:
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_password
+   ```bash
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_email_password
 5. **Run the application**:
-python app.py
-6. **Access the app in your browser at** http://127.0.0.1:5000/.
+   ```bash
+   python app.py
+7. **Access the app in your browser at**
+   ```bash
+   http://127.0.0.1:5000/.
 
 ### Usage
 Enter a query in the search bar and click "Search" to fetch results.
