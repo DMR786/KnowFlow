@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Search Results for "{{ query }}"</h1>
+        
+        <h2>Stack Overflow Results</h2>
+        <ul id="stackoverflow-results" class="list-group mb-4">
+            {% for result in stackoverflow %}
+                <li class="list-group-item">
+                    <a href="{{ result['link'] }}" target="_blank">{{ result['title'] }}</a>
+                </li>
+            {% else %}
+                <li class="list-group-item">No results found for Stack Overflow</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Reddit Results</h2>
+        <ul id="reddit-results" class="list-group mb-4">
+            {% for result in reddit %}
+                <li class="list-group-item">
+                    <a href="https://reddit.com{{ result['permalink'] }}" target="_blank">https://reddit.com{{ result['permalink'] }}</a>
+                </li>
+            {% else %}
+                <li class="list-group-item">No results found for Reddit</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Show More button -->
+        <button id="show-more" class="btn btn-primary" data-offset="5">Show More</button>
+
+        <!-- Email form to send results -->
+        <h2 class="mt-4">Send Results to Email</h2>
+        <form action="/send_email" method="POST" class="mb-4">
+            <div class="form-group">
+                <label for="email">Your Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <button type="submit" class="btn btn-success">Send to Mail</button>
+        </form>
+
+        <!-- Search bar for new queries -->
+        <form action="/" method="GET">
+            <button type="submit" class="btn btn-secondary">Search Again</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#show-more').on('click', function() {
+                const currentOffset = parseInt($(this).data('offset'));
+                const query = '{{ query }}';  // Preserve the search query
+                $.post('/show_more', { query: query, offset: currentOffset })
+                    .done(function(data) {
+                        const newItems = $(data);
+
+                        // Append new Stack Overflow results
+                        const newStackOverflowItems = newItems.find('#stackoverflow-results .list-group-item');
+                        $('#stackoverflow-results').append(newStackOverflowItems);
+
+                        // Append new Reddit results
+                        const newRedditItems = newItems.find('#reddit-results .list-group-item');
+                        $('#reddit-results').append(newRedditItems);
+
+                        // Update the offset for the next request
+                        $('#show-more').data('offset', currentOffset + 5);
+                    })
+                    .fail(function() {
+                        console.error('Error fetching more results.');
+                    });
+        });
+        });
+    </script>
+</body>
+</html>
